@@ -1,0 +1,43 @@
+[project]
+name = "ml-template"
+version = "0.1.0"
+description = "Add your description here"
+authors = [{ name = "tunamaguro" }]
+dependencies = [
+    "matplotlib>=3.8.4",
+    "seaborn>=0.13.2",
+    "plotly>=5.22.0",
+    "tensorboard>=2.17.0",
+    "torch==2.3.1+cu121",
+    "torchvision==0.18.1+cu121",
+    "torchaudio==2.3.1+cu121",
+    "ibis-framework[polars]>=9.1.0",
+    "polars>=0.20.31",
+    "torchinfo>=1.8.0",
+    "ydata-profiling>=4.8.3",
+    "lightgbm>=4.4.0",
+    "lazypredict>=0.2.12",
+    "scikit-learn>=1.5.0",
+]
+readme = "README.md"
+requires-python = ">= 3.11"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = ["ruff>=0.4.10", "tensorboard>=2.17.0", "jupyterlab>=4.1.6"]
+
+
+[[tool.rye.sources]]
+name = "torch"
+url = "https://download.pytorch.org/whl/cu121"
+type = "index"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/workspaces"]
