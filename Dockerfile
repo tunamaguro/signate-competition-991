@@ -12,7 +12,8 @@ RUN apt-get update \
     curl \
     unzip \
     #     # ffmpeg \
-    sudo 
+    sudo  \
+    libgomp1 # for lightgbm
 
 ENV RYE_HOME="/opt/rye"
 ENV PATH="$RYE_HOME/shims:$PATH"
