@@ -9,23 +9,28 @@
     "customizations": {
         "vscode": {
             "settings": {
+                "python.defaultInterpreterPath": "/opt/rye/shims/python",
                 "[python]": {
+                    "editor.defaultFormatter": "charliermarsh.ruff",
+                    "editor.codeActionsOnSave": {
+                        "source.fixAll": "explicit",
+                        "source.organizeImports": "explicit"
+                    },
                     "editor.formatOnSave": true,
                 },
-                "python.linting.lintOnSave": true,
-                "python.linting.pylintEnabled": false,
-                "python.linting.flake8Enabled": true,
-                "python.formatting.provider": "black",
-                "editor.codeActionsOnSave": {
-                    "source.organizeImports": true
-                }
+                "notebook.codeActionsOnSave": {
+                    "source.fixAll": "explicit",
+                    "source.organizeImports": "explicit"
+                },
+                "ruff.nativeServer": true
             },
             // Add the IDs of extensions you want installed when the container is created.
             "extensions": [
                 "ms-python.python",
                 "ms-toolsai.jupyter",
-                "ms-python.isort",
-                "ms-python.flake8",
+                "charliermarsh.ruff",
+                "njpwerner.autodocstring",
+                "tamasfe.even-better-toml",
                 "mosapride.zenkaku",
                 "streetsidesoftware.code-spell-checker"
             ]
