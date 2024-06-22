@@ -1,0 +1,34 @@
+{
+    "name": "Machine learning template",
+    "dockerComposeFile": [
+        "../compose.yaml"
+    ],
+    "service": "dev",
+    "remoteUser": "vscode",
+    "workspaceFolder": "/home/vscode/workspaces",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "[python]": {
+                    "editor.formatOnSave": true,
+                },
+                "python.linting.lintOnSave": true,
+                "python.linting.pylintEnabled": false,
+                "python.linting.flake8Enabled": true,
+                "python.formatting.provider": "black",
+                "editor.codeActionsOnSave": {
+                    "source.organizeImports": true
+                }
+            },
+            // Add the IDs of extensions you want installed when the container is created.
+            "extensions": [
+                "ms-python.python",
+                "ms-toolsai.jupyter",
+                "ms-python.isort",
+                "ms-python.flake8",
+                "mosapride.zenkaku",
+                "streetsidesoftware.code-spell-checker"
+            ]
+        }
+    },
+}
