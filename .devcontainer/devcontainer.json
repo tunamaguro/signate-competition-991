@@ -32,7 +32,8 @@
                 "njpwerner.autodocstring",
                 "tamasfe.even-better-toml",
                 "mosapride.zenkaku",
-                "streetsidesoftware.code-spell-checker"
+                "streetsidesoftware.code-spell-checker",
+                "ms-azuretools.vscode-docker"
             ]
         }
     },

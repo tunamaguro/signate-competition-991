@@ -1,11 +1,11 @@
-FROM  nvcr.io/nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
+FROM  nvcr.io/nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
 
 ENV TZ=Asia/Tokyo
 ENV DEBIAN_FRONTEND=noninteractive=value
 
 # Install dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+RUN apt-get update 
+RUN apt-get install -y --no-install-recommends \
     curl \
     wget \
     git \
@@ -13,20 +13,29 @@ RUN apt-get update \
     unzip \
     #     # ffmpeg \
     sudo  \
-    libgomp1 # for lightgbm
+    python3
 
-ENV RYE_HOME="/opt/rye"
-ENV PATH="$RYE_HOME/shims:$PATH"
+RUN apt-get install -y --no-install-recommends \
+    # for lightgbm cuda and gpu
+    cmake \
+    build-essential \
+    libboost-dev \
+    libboost-system-dev \
+    libboost-filesystem-dev 
 
-SHELL [ "/bin/bash", "-o", "pipefail", "-c" ]
-RUN curl -sSf https://rye.astral.sh/get | RYE_INSTALL_OPTION="--yes" bash  \
-    && rye config --set-bool behavior.global-python=true \
-    && rye config --set-bool behavior.use-uv=true
+RUN curl -LsSf https://bootstrap.pypa.io/get-pip.py | python3
 
-COPY ./.python-version ./pyproject.toml ./requirements* README.md ./
-RUN rye pin "$(cat .python-version)" \
-    && rye sync
+# Add OpenCL ICD files for LightGBM
+RUN mkdir -p /etc/OpenCL/vendors && \
+    echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
+    
+RUN pip install lightgbm \
+    --no-binary lightgbm \
+    --no-cache lightgbm \
+    --config-settings=cmake.define.USE_CUDA=ON 
 
+COPY requirements.txt /requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Set non root user
 ARG USERNAME=vscode
@@ -38,8 +47,6 @@ RUN groupadd -g $GID $GROUPNAME && \
     useradd -m -s /bin/bash -u $UID -g $GID -G sudo $USERNAME && \
     echo $USERNAME:$PASSWORD | chpasswd && \
     echo "$USERNAME   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-RUN chown -R vscode $RYE_HOME
 
 USER $USERNAME
 WORKDIR /home/$USERNAME/workspaces
